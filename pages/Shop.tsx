@@ -12,7 +12,7 @@ const SIZES = [
 
 const Shop: React.FC = () => {
   const { addToCart } = useCart();
-  
+
   // State to track selection for each flavor card independently
   const [cardStates, setCardStates] = useState<Record<string, { sizeIdx: number; qty: number }>>(() => {
     const initial: Record<string, { sizeIdx: number; qty: number }> = {};
@@ -40,11 +40,18 @@ const Shop: React.FC = () => {
     if (!flavor) return;
 
     // Construct a product object for the cart
+    // Map flavor IDs to local images
+    let localImage = '/images/cool-kick.png';
+    if (flavor.id === 'rooibos-boost') localImage = '/images/rooibos-boost.png';
+    if (flavor.id === 'berry-kick') localImage = '/images/berry-kick.png';
+    if (flavor.id === 'cool-kick') localImage = '/images/cool-kick.png';
+    if (flavor.id === 'black-boost') localImage = '/images/rooibos-boost.png'; // Fallback for black tea
+
     const productToAdd: Product = {
       id: `${flavor.id}-${sizeConfig.label}`, // Unique ID for this variant
       name: `${flavor.name} - ${sizeConfig.label}`,
       price: sizeConfig.price,
-      image: `https://picsum.photos/seed/${flavor.id}/400/400`, // Dynamic placeholder
+      image: localImage,
       category: 'drink',
       shortDesc: flavor.desc,
       size: sizeConfig.label,
@@ -73,7 +80,7 @@ const Shop: React.FC = () => {
       <div className="absolute inset-0 opacity-10 bg-[url('https://www.transparenttextures.com/patterns/cardboard-flat.png')] pointer-events-none mix-blend-multiply"></div>
 
       <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20">
-        
+
         {/* Header Section */}
         <div className="text-center mb-16">
           <h1 className="font-mono text-5xl md:text-7xl text-[#3e3a35] font-bold tracking-tight mb-4 uppercase" style={{ textShadow: '2px 2px 0px rgba(255,255,255,0.1)' }}>
@@ -81,7 +88,7 @@ const Shop: React.FC = () => {
           </h1>
           <div className="w-24 h-1 bg-[#4A6C47] mx-auto mb-6"></div>
           <p className="font-serif italic text-[#3e3a35] text-lg max-w-2xl mx-auto">
-            Hand-crafted kombucha from our mercantile to your door.<br/>
+            Hand-crafted kombucha from our mercantile to your door.<br />
             Small batch, big bubbles.
           </p>
         </div>
@@ -91,10 +98,10 @@ const Shop: React.FC = () => {
           {FLAVOURS.map((flavor) => {
             const state = cardStates[flavor.id] || { sizeIdx: 0, qty: 1 };
             const currentSize = SIZES[state.sizeIdx];
-            
+
             return (
               <div key={flavor.id} className="bg-[#dccbb1] rounded-sm shadow-xl overflow-hidden flex flex-col transform transition-transform hover:-translate-y-1 duration-300">
-                
+
                 {/* Top Half: Icon & Color */}
                 <div className={`${flavor.color} aspect-square p-8 flex flex-col items-center justify-center relative border-b-4 border-black/5`}>
                   {/* Tag */}
@@ -104,9 +111,26 @@ const Shop: React.FC = () => {
                     </span>
                   </div>
 
-                  {/* Icon Circle */}
-                  <div className="w-32 h-32 rounded-full border-4 border-dashed border-black/10 flex items-center justify-center bg-white/20 backdrop-blur-sm mb-4">
-                    {getIcon(flavor.icon)}
+                  {/* Dynamic Product Image */}
+                  <div className="w-full h-full flex items-center justify-center relative">
+                    {/* 
+                          DYNAMIC IMAGE LOGIC:
+                          We attempt to show the specific size image if available.
+                          Currently only 'cool-kick-330' is generated.
+                          Others fall back to the main flavor image.
+                        */}
+                    <img
+                      src={
+                        (flavor.id === 'cool-kick' && currentSize.label === '330ml')
+                          ? '/images/cool-kick-330.png'
+                          : (flavor.id === 'rooibos-boost' ? '/images/rooibos-boost.png' :
+                            flavor.id === 'berry-kick' ? '/images/berry-kick.png' :
+                              flavor.id === 'cool-kick' ? '/images/cool-kick.png' :
+                                '/images/rooibos-boost.png')
+                      }
+                      alt={`${flavor.name} ${currentSize.label}`}
+                      className="max-h-full max-w-full object-contain drop-shadow-xl transform transition-transform duration-500 key={currentSize.label}"
+                    />
                   </div>
                 </div>
 
@@ -120,7 +144,7 @@ const Shop: React.FC = () => {
                     <div>
                       <label className="block font-mono text-[10px] uppercase font-bold text-[#2c2925]/60 mb-1">Select Size</label>
                       <div className="relative">
-                        <select 
+                        <select
                           value={state.sizeIdx}
                           onChange={(e) => updateCardState(flavor.id, 'sizeIdx', Number(e.target.value))}
                           className="w-full appearance-none bg-[#e8dec9] border-none rounded-sm py-3 px-4 font-mono text-xs text-[#2c2925] font-bold focus:ring-2 focus:ring-[#4A6C47] cursor-pointer"
@@ -141,14 +165,14 @@ const Shop: React.FC = () => {
                     <div className="flex gap-3">
                       {/* Qty */}
                       <div className="flex items-center bg-[#e8dec9] rounded-sm">
-                        <button 
+                        <button
                           onClick={() => updateCardState(flavor.id, 'qty', Math.max(1, state.qty - 1))}
                           className="px-3 py-3 hover:text-[#4A6C47] transition-colors"
                         >
                           <Minus className="w-3 h-3" />
                         </button>
                         <span className="font-mono text-xs font-bold min-w-[1.5rem] text-center">{state.qty}</span>
-                        <button 
+                        <button
                           onClick={() => updateCardState(flavor.id, 'qty', state.qty + 1)}
                           className="px-3 py-3 hover:text-[#4A6C47] transition-colors"
                         >
@@ -157,7 +181,7 @@ const Shop: React.FC = () => {
                       </div>
 
                       {/* Add Button */}
-                      <button 
+                      <button
                         onClick={() => handleAddToCart(flavor.id)}
                         className="flex-1 bg-[#5e4b3e] text-[#e8dec9] font-mono text-xs font-bold uppercase tracking-widest py-3 rounded-sm hover:bg-[#4a3b31] transition-colors flex items-center justify-center gap-2 shadow-lg active:transform active:scale-95"
                       >
@@ -181,32 +205,32 @@ const Shop: React.FC = () => {
           </div>
 
           <div className="flex gap-6">
-             <div className="w-20 h-20 rounded-full border-2 border-[#3e3a35]/30 flex flex-col items-center justify-center text-center p-2 transform -rotate-12">
-                <span className="font-mono text-[8px] font-bold uppercase leading-tight">Organic<br/>Certified</span>
-             </div>
-             <div className="w-20 h-20 rounded-full border-2 border-[#4A6C47] text-[#4A6C47] flex flex-col items-center justify-center text-center p-2 transform rotate-6 bg-[#4A6C47]/10">
-                <span className="font-mono text-[8px] font-bold uppercase leading-tight">Live<br/>Cultures</span>
-             </div>
-             <div className="w-20 h-20 rounded-full border-2 border-[#3e3a35]/30 flex flex-col items-center justify-center text-center p-2 transform -rotate-3">
-                <span className="font-mono text-[8px] font-bold uppercase leading-tight">Small<br/>Batch</span>
-             </div>
+            <div className="w-20 h-20 rounded-full border-2 border-[#3e3a35]/30 flex flex-col items-center justify-center text-center p-2 transform -rotate-12">
+              <span className="font-mono text-[8px] font-bold uppercase leading-tight">Organic<br />Certified</span>
+            </div>
+            <div className="w-20 h-20 rounded-full border-2 border-[#4A6C47] text-[#4A6C47] flex flex-col items-center justify-center text-center p-2 transform rotate-6 bg-[#4A6C47]/10">
+              <span className="font-mono text-[8px] font-bold uppercase leading-tight">Live<br />Cultures</span>
+            </div>
+            <div className="w-20 h-20 rounded-full border-2 border-[#3e3a35]/30 flex flex-col items-center justify-center text-center p-2 transform -rotate-3">
+              <span className="font-mono text-[8px] font-bold uppercase leading-tight">Small<br />Batch</span>
+            </div>
           </div>
         </div>
 
         {/* Footer Details */}
         <div className="mt-20 pt-8 border-t border-[#3e3a35]/20 grid grid-cols-1 md:grid-cols-2 gap-8 text-[#3e3a35]">
-           <div>
-              <h5 className="font-mono font-bold text-sm uppercase tracking-widest mb-4">Zini Mercantile</h5>
-              <p className="font-mono text-[10px] opacity-60 leading-relaxed">
-                 123 Kombucha Lane<br/>
-                 Mtunzini Nature Conservancy<br/>
-                 KwaZulu-Natal, 3867
-              </p>
-           </div>
-           <div className="md:text-right">
-              <p className="font-serif italic text-lg opacity-80">Made with <span className="text-[#4A6C47]">♥</span> in Mtunzini</p>
-              <p className="font-mono text-[10px] opacity-50 mt-2">Established 2021</p>
-           </div>
+          <div>
+            <h5 className="font-mono font-bold text-sm uppercase tracking-widest mb-4">Zini Mercantile</h5>
+            <p className="font-mono text-[10px] opacity-60 leading-relaxed">
+              123 Kombucha Lane<br />
+              Mtunzini Nature Conservancy<br />
+              KwaZulu-Natal, 3867
+            </p>
+          </div>
+          <div className="md:text-right">
+            <p className="font-serif italic text-lg opacity-80">Made with <span className="text-[#4A6C47]">♥</span> in Mtunzini</p>
+            <p className="font-mono text-[10px] opacity-50 mt-2">Established 2021</p>
+          </div>
         </div>
 
       </div>

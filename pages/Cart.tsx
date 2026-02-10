@@ -1,17 +1,17 @@
 import React, { useState } from 'react';
 import { useCart } from '../context/CartContext';
 import { Link } from 'react-router-dom';
-import { Trash2, Lock, ArrowRight, CheckCircle } from 'lucide-react';
+import { Trash2, Lock, ArrowRight } from 'lucide-react';
 import { SHIPPING_COST } from '../constants';
 
 const Cart: React.FC = () => {
   const { items, removeFromCart, updateQuantity, cartTotal } = useCart();
   const [shippingMethod, setShippingMethod] = useState<'pickup' | 'delivery'>('pickup');
-  const [isCheckingOut, setIsCheckingOut] = useState(false);
+
 
   const finalTotal = cartTotal + (shippingMethod === 'delivery' ? SHIPPING_COST : 0);
 
-  if (items.length === 0 && !isCheckingOut) {
+  if (items.length === 0) {
     return (
       <div className="min-h-[70vh] flex flex-col items-center justify-center bg-zini-cream">
         <h2 className="font-serif text-4xl text-zini-dark mb-6">Your cart is empty</h2>
@@ -23,31 +23,13 @@ const Cart: React.FC = () => {
     );
   }
 
-  if (isCheckingOut) {
-    return (
-       <div className="min-h-screen bg-zini-cream flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
-          <div className="max-w-md w-full space-y-8 bg-white p-12 shadow-2xl border-t-4 border-zini-green text-center">
-             <div className="w-20 h-20 bg-zini-green/10 rounded-full flex items-center justify-center mx-auto text-zini-green">
-                <CheckCircle className="h-10 w-10" />
-             </div>
-             <h2 className="mt-6 text-3xl font-serif text-zini-dark">Order Confirmed</h2>
-             <p className="font-serif italic text-zini-charcoal/80">Thank you for supporting Zini Kombucha. Your gut will thank you.</p>
-             <p className="font-mono text-xs uppercase tracking-widest text-zini-charcoal/40 mt-4">Order #ZINI-{Math.floor(Math.random() * 10000)}</p>
-             <div className="mt-10">
-               <Link to="/" className="text-zini-green font-mono font-bold text-xs uppercase tracking-[0.2em] hover:text-zini-dark border-b border-zini-green pb-1">Return to Home</Link>
-             </div>
-          </div>
-       </div>
-    )
-  }
-
   return (
     <div className="bg-zini-cream min-h-screen py-20">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <h1 className="font-serif text-4xl md:text-5xl text-zini-dark mb-12">Shopping Cart</h1>
 
         <div className="lg:grid lg:grid-cols-12 lg:gap-x-16 lg:items-start">
-          
+
           {/* Cart Items */}
           <section className="lg:col-span-7">
             <ul className="border-t border-b border-zini-charcoal/10 divide-y divide-zini-charcoal/10">
@@ -119,31 +101,31 @@ const Cart: React.FC = () => {
                 <dt>Subtotal</dt>
                 <dd className="text-zini-dark font-bold">R{cartTotal}</dd>
               </div>
-              
+
               <div className="border-t border-zini-charcoal/10 pt-6">
                 <h3 className="font-mono text-xs uppercase tracking-widest text-zini-dark mb-4">Shipping Method</h3>
                 <div className="space-y-3">
-                   <div 
-                     onClick={() => setShippingMethod('pickup')}
-                     className={`flex items-center justify-between p-4 border cursor-pointer transition-colors ${shippingMethod === 'pickup' ? 'border-zini-green bg-zini-green/5' : 'border-zini-charcoal/10 hover:border-zini-charcoal/30'}`}
-                   >
-                     <div>
-                       <span className="block font-serif text-sm text-zini-dark">Local Pickup</span>
-                       <span className="block text-zini-charcoal/50 text-[10px] font-mono uppercase mt-1">Mtunzini (Zini)</span>
-                     </div>
-                     <span className="font-mono text-xs font-bold text-zini-green">Free</span>
-                   </div>
+                  <div
+                    onClick={() => setShippingMethod('pickup')}
+                    className={`flex items-center justify-between p-4 border cursor-pointer transition-colors ${shippingMethod === 'pickup' ? 'border-zini-green bg-zini-green/5' : 'border-zini-charcoal/10 hover:border-zini-charcoal/30'}`}
+                  >
+                    <div>
+                      <span className="block font-serif text-sm text-zini-dark">Local Pickup</span>
+                      <span className="block text-zini-charcoal/50 text-[10px] font-mono uppercase mt-1">Mtunzini (Zini)</span>
+                    </div>
+                    <span className="font-mono text-xs font-bold text-zini-green">Free</span>
+                  </div>
 
-                   <div 
-                     onClick={() => setShippingMethod('delivery')}
-                     className={`flex items-center justify-between p-4 border cursor-pointer transition-colors ${shippingMethod === 'delivery' ? 'border-zini-green bg-zini-green/5' : 'border-zini-charcoal/10 hover:border-zini-charcoal/30'}`}
-                   >
-                     <div>
-                       <span className="block font-serif text-sm text-zini-dark">National Delivery</span>
-                       <span className="block text-zini-charcoal/50 text-[10px] font-mono uppercase mt-1">South Africa Wide</span>
-                     </div>
-                     <span className="font-mono text-xs font-bold text-zini-dark">R{SHIPPING_COST}</span>
-                   </div>
+                  <div
+                    onClick={() => setShippingMethod('delivery')}
+                    className={`flex items-center justify-between p-4 border cursor-pointer transition-colors ${shippingMethod === 'delivery' ? 'border-zini-green bg-zini-green/5' : 'border-zini-charcoal/10 hover:border-zini-charcoal/30'}`}
+                  >
+                    <div>
+                      <span className="block font-serif text-sm text-zini-dark">National Delivery</span>
+                      <span className="block text-zini-charcoal/50 text-[10px] font-mono uppercase mt-1">South Africa Wide</span>
+                    </div>
+                    <span className="font-mono text-xs font-bold text-zini-dark">R{SHIPPING_COST}</span>
+                  </div>
                 </div>
               </div>
 
@@ -154,18 +136,17 @@ const Cart: React.FC = () => {
             </dl>
 
             <div className="mt-10">
-              <button
-                type="button"
-                onClick={() => setIsCheckingOut(true)}
+              <Link
+                to="/checkout"
                 className="w-full bg-zini-dark py-4 px-4 text-white font-mono text-xs font-bold uppercase tracking-[0.2em] hover:bg-zini-green flex items-center justify-center transition-colors shadow-lg"
               >
                 Checkout <ArrowRight className="ml-2 h-4 w-4" />
-              </button>
+              </Link>
             </div>
-            
+
             <div className="mt-8 flex justify-center items-center font-mono text-[10px] uppercase tracking-widest text-zini-charcoal/40">
-               <Lock className="w-3 h-3 mr-2" />
-               Secure SSL Checkout
+              <Lock className="w-3 h-3 mr-2" />
+              Secure SSL Checkout
             </div>
           </section>
         </div>

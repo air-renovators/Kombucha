@@ -31,3 +31,20 @@ export interface FlavorProfile {
 
 export type SortOption = 'price-asc' | 'price-desc' | 'name';
 export type FilterOption = 'all' | '330ml' | '440ml' | '1L';
+
+export interface ShippingDetails {
+  firstName: string;
+  lastName: string;
+  email: string;
+  address: string;
+  city: string;
+  postalCode: string;
+  province: string;
+  phone: string;
+}
+
+export type PaymentMethod = 'credit-card' | 'eft';
+
+export interface CheckoutFormData extends ShippingDetails {
+  paymentMethod: PaymentMethod;
+}
