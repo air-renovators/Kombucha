@@ -25,8 +25,10 @@ const Checkout: React.FC = () => {
         paymentMethod: 'credit-card'
     });
 
-    // Calculate totals
-    const shippingTotal = SHIPPING_COST; // Simplify to fixed cost for now
+    const [shippingMethod, setShippingMethod] = useState<'pickup' | 'delivery'>('pickup');
+
+    // Calculate totals - only add shipping if delivery is selected
+    const shippingTotal = shippingMethod === 'delivery' ? SHIPPING_COST : 0;
     const orderTotal = cartTotal + shippingTotal;
 
     useEffect(() => {
@@ -188,57 +190,121 @@ const Checkout: React.FC = () => {
                                     </div>
 
                                     <div className="sm:col-span-2 pt-6">
-                                        <h2 className="font-serif text-2xl text-zini-dark mb-6">Shipping Address</h2>
+                                        <h2 className="font-serif text-2xl text-zini-dark mb-6">Shipping Method</h2>
                                     </div>
 
                                     <div className="sm:col-span-2">
-                                        <label htmlFor="address" className="block text-xs font-mono font-bold text-zini-charcoal uppercase mb-1">Address</label>
-                                        <input
-                                            type="text"
-                                            name="address"
-                                            id="address"
-                                            required
-                                            value={formData.address}
-                                            onChange={handleChange}
-                                            className="block w-full border-zini-charcoal/20 shadow-sm focus:ring-zini-green focus:border-zini-green sm:text-sm px-4 py-3"
-                                        />
+                                        <div className="grid grid-cols-2 gap-4">
+                                            <div
+                                                onClick={() => setShippingMethod('pickup')}
+                                                className={`border-2 p-4 cursor-pointer transition-all ${shippingMethod === 'pickup'
+                                                    ? 'border-zini-green bg-zini-green/5'
+                                                    : 'border-zini-charcoal/20 hover:border-zini-charcoal/40'
+                                                    }`}
+                                            >
+                                                <div className="flex items-center justify-between mb-2">
+                                                    <span className="font-mono text-xs font-bold uppercase">Local Pickup</span>
+                                                    <input
+                                                        type="radio"
+                                                        checked={shippingMethod === 'pickup'}
+                                                        onChange={() => setShippingMethod('pickup')}
+                                                        className="h-4 w-4 text-zini-green focus:ring-zini-green"
+                                                    />
+                                                </div>
+                                                <p className="text-xs text-zini-charcoal/60">Collect from Mtunzini</p>
+                                                <p className="font-mono text-sm font-bold text-zini-green mt-2">FREE</p>
+                                            </div>
+
+                                            <div
+                                                onClick={() => setShippingMethod('delivery')}
+                                                className={`border-2 p-4 cursor-pointer transition-all ${shippingMethod === 'delivery'
+                                                    ? 'border-zini-green bg-zini-green/5'
+                                                    : 'border-zini-charcoal/20 hover:border-zini-charcoal/40'
+                                                    }`}
+                                            >
+                                                <div className="flex items-center justify-between mb-2">
+                                                    <span className="font-mono text-xs font-bold uppercase">Delivery</span>
+                                                    <input
+                                                        type="radio"
+                                                        checked={shippingMethod === 'delivery'}
+                                                        onChange={() => setShippingMethod('delivery')}
+                                                        className="h-4 w-4 text-zini-green focus:ring-zini-green"
+                                                    />
+                                                </div>
+                                                <p className="text-xs text-zini-charcoal/60">Nationwide shipping</p>
+                                                <p className="font-mono text-sm font-bold text-zini-dark mt-2">R{SHIPPING_COST}</p>
+                                            </div>
+                                        </div>
                                     </div>
-                                    <div className="sm:col-span-1">
-                                        <label htmlFor="city" className="block text-xs font-mono font-bold text-zini-charcoal uppercase mb-1">City</label>
-                                        <input
-                                            type="text"
-                                            name="city"
-                                            id="city"
-                                            required
-                                            value={formData.city}
-                                            onChange={handleChange}
-                                            className="block w-full border-zini-charcoal/20 shadow-sm focus:ring-zini-green focus:border-zini-green sm:text-sm px-4 py-3"
-                                        />
-                                    </div>
-                                    <div className="sm:col-span-1">
-                                        <label htmlFor="province" className="block text-xs font-mono font-bold text-zini-charcoal uppercase mb-1">Province</label>
-                                        <input
-                                            type="text"
-                                            name="province"
-                                            id="province"
-                                            required
-                                            value={formData.province}
-                                            onChange={handleChange}
-                                            className="block w-full border-zini-charcoal/20 shadow-sm focus:ring-zini-green focus:border-zini-green sm:text-sm px-4 py-3"
-                                        />
-                                    </div>
-                                    <div className="sm:col-span-1">
-                                        <label htmlFor="postalCode" className="block text-xs font-mono font-bold text-zini-charcoal uppercase mb-1">Postal code</label>
-                                        <input
-                                            type="text"
-                                            name="postalCode"
-                                            id="postalCode"
-                                            required
-                                            value={formData.postalCode}
-                                            onChange={handleChange}
-                                            className="block w-full border-zini-charcoal/20 shadow-sm focus:ring-zini-green focus:border-zini-green sm:text-sm px-4 py-3"
-                                        />
-                                    </div>
+
+                                    {shippingMethod === 'delivery' && (
+                                        <>
+                                            <div className="sm:col-span-2 pt-6">
+                                                <h2 className="font-serif text-2xl text-zini-dark mb-6">Shipping Address</h2>
+                                            </div>
+
+                                            <div className="sm:col-span-2">
+                                                <label htmlFor="address" className="block text-xs font-mono font-bold text-zini-charcoal uppercase mb-1">Address</label>
+                                                <input
+                                                    type="text"
+                                                    name="address"
+                                                    id="address"
+                                                    required={shippingMethod === 'delivery'}
+                                                    value={formData.address}
+                                                    onChange={handleChange}
+                                                    className="block w-full border-zini-charcoal/20 shadow-sm focus:ring-zini-green focus:border-zini-green sm:text-sm px-4 py-3"
+                                                />
+                                            </div>
+                                            <div className="sm:col-span-1">
+                                                <label htmlFor="city" className="block text-xs font-mono font-bold text-zini-charcoal uppercase mb-1">City</label>
+                                                <input
+                                                    type="text"
+                                                    name="city"
+                                                    id="city"
+                                                    required={shippingMethod === 'delivery'}
+                                                    value={formData.city}
+                                                    onChange={handleChange}
+                                                    className="block w-full border-zini-charcoal/20 shadow-sm focus:ring-zini-green focus:border-zini-green sm:text-sm px-4 py-3"
+                                                />
+                                            </div>
+                                            <div className="sm:col-span-1">
+                                                <label htmlFor="province" className="block text-xs font-mono font-bold text-zini-charcoal uppercase mb-1">Province</label>
+                                                <input
+                                                    type="text"
+                                                    name="province"
+                                                    id="province"
+                                                    required={shippingMethod === 'delivery'}
+                                                    value={formData.province}
+                                                    onChange={handleChange}
+                                                    className="block w-full border-zini-charcoal/20 shadow-sm focus:ring-zini-green focus:border-zini-green sm:text-sm px-4 py-3"
+                                                />
+                                            </div>
+                                            <div className="sm:col-span-1">
+                                                <label htmlFor="postalCode" className="block text-xs font-mono font-bold text-zini-charcoal uppercase mb-1">Postal code</label>
+                                                <input
+                                                    type="text"
+                                                    name="postalCode"
+                                                    id="postalCode"
+                                                    required={shippingMethod === 'delivery'}
+                                                    value={formData.postalCode}
+                                                    onChange={handleChange}
+                                                    className="block w-full border-zini-charcoal/20 shadow-sm focus:ring-zini-green focus:border-zini-green sm:text-sm px-4 py-3"
+                                                />
+                                            </div>
+                                        </>
+                                    )}
+
+                                    {shippingMethod === 'pickup' && (
+                                        <div className="sm:col-span-2 pt-6">
+                                            <div className="bg-zini-green/10 border-l-4 border-zini-green p-4 rounded">
+                                                <p className="font-mono text-xs font-bold uppercase text-zini-dark mb-2">Pickup Location</p>
+                                                <p className="font-serif text-sm text-zini-charcoal">123 Kombucha Lane, Mtunzini Nature Conservancy, KwaZulu-Natal, 3867</p>
+                                                <p className="font-mono text-xs text-zini-charcoal/60 mt-3">We'll contact you at <span className="font-bold text-zini-dark">{formData.phone || 'your phone number'}</span> to arrange pickup.</p>
+                                            </div>
+                                        </div>
+                                    )}
+
+
                                 </div>
 
                                 <div className="mt-8 flex justify-end">
@@ -329,10 +395,18 @@ const Checkout: React.FC = () => {
                                 <h2 className="font-serif text-2xl text-zini-dark mb-6">Review Order</h2>
 
                                 <div className="border-b border-gray-200 pb-6 mb-6">
-                                    <h3 className="text-xs font-mono font-bold uppercase text-gray-500 mb-2">Shipping To</h3>
+                                    <h3 className="text-xs font-mono font-bold uppercase text-gray-500 mb-2">
+                                        {shippingMethod === 'pickup' ? 'Pickup Details' : 'Shipping To'}
+                                    </h3>
                                     <p className="text-sm text-zini-dark">{formData.firstName} {formData.lastName}</p>
-                                    <p className="text-sm text-zini-dark">{formData.address}</p>
-                                    <p className="text-sm text-zini-dark">{formData.city}, {formData.province} {formData.postalCode}</p>
+                                    {shippingMethod === 'delivery' ? (
+                                        <>
+                                            <p className="text-sm text-zini-dark">{formData.address}</p>
+                                            <p className="text-sm text-zini-dark">{formData.city}, {formData.province} {formData.postalCode}</p>
+                                        </>
+                                    ) : (
+                                        <p className="text-sm text-zini-dark font-mono">Pickup from Mtunzini Mercantile</p>
+                                    )}
                                     <p className="text-sm text-zini-dark">{formData.phone}</p>
                                 </div>
 
