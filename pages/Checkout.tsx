@@ -3,7 +3,8 @@ import { useNavigate, Link } from 'react-router-dom';
 import { useCart } from '../context/CartContext';
 import { SHIPPING_COST } from '../constants';
 import { CheckoutFormData, PaymentMethod } from '../types';
-import { CheckCircle, Truck, CreditCard, Lock, ArrowRight, ArrowLeft, Loader2 } from 'lucide-react';
+import { CheckCircle, Truck, CreditCard, Lock, ArrowRight, ArrowLeft, Loader2, AlertCircle } from 'lucide-react';
+import { supabase } from '../lib/supabase';
 
 const Checkout: React.FC = () => {
     const { items, cartTotal, clearCart } = useCart();
@@ -54,16 +55,48 @@ const Checkout: React.FC = () => {
         window.scrollTo(0, 0);
     };
 
+    const [error, setError] = useState<string | null>(null);
+
     const handlePlaceOrder = async () => {
         setIsProcessing(true);
+        setError(null);
 
-        // Simulate API call
-        setTimeout(() => {
-            setIsProcessing(false);
+        const orderNumber = `ZINI-${Math.floor(Math.random() * 89999) + 10000}`;
+
+        try {
+            const { error: supabaseError } = await supabase
+                .from('orders')
+                .insert([{
+                    order_number: orderNumber,
+                    first_name: formData.firstName,
+                    last_name: formData.lastName,
+                    email: formData.email,
+                    phone: formData.phone,
+                    shipping_method: shippingMethod,
+                    address: shippingMethod === 'delivery' ? formData.address : null,
+                    city: shippingMethod === 'delivery' ? formData.city : null,
+                    province: shippingMethod === 'delivery' ? formData.province : null,
+                    postal_code: shippingMethod === 'delivery' ? formData.postalCode : null,
+                    items: items,
+                    subtotal: cartTotal,
+                    shipping_cost: shippingTotal,
+                    total: orderTotal,
+                    payment_method: formData.paymentMethod,
+                    payment_status: 'pending' // Default status
+                }]);
+
+            if (supabaseError) throw supabaseError;
+
+            // Success
             setOrderComplete(true);
             clearCart();
             window.scrollTo(0, 0);
-        }, 2000);
+        } catch (err) {
+            console.error('Order placement error:', err);
+            setError('Failed to place order. Please try again.');
+        } finally {
+            setIsProcessing(false);
+        }
     };
 
     if (orderComplete) {
@@ -432,6 +465,13 @@ const Checkout: React.FC = () => {
                                     <span className="font-serif text-xl font-bold text-zini-dark">Total</span>
                                     <span className="font-mono text-xl font-bold text-zini-green">R{orderTotal}</span>
                                 </div>
+
+                                {error && (
+                                    <div className="mb-4 p-4 bg-red-50 border border-red-100 rounded flex items-center text-red-600 text-sm animate-in fade-in slide-in-from-bottom-2">
+                                        <AlertCircle className="w-4 h-4 mr-2" />
+                                        {error}
+                                    </div>
+                                )}
 
                                 <div className="mt-8 flex justify-between">
                                     <button
