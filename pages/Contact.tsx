@@ -1,5 +1,4 @@
-import React, { useState } from 'react';
-import { Mail, MapPin, Phone, Send, Loader2, CheckCircle } from 'lucide-react';
+import { supabase } from '../lib/supabase';
 
 const Contact: React.FC = () => {
     const [formData, setFormData] = useState({
@@ -11,17 +10,28 @@ const Contact: React.FC = () => {
 
     const [isSubmitting, setIsSubmitting] = useState(false);
     const [isSent, setIsSent] = useState(false);
+    const [error, setError] = useState<string | null>(null);
 
-    const handleSubmit = (e: React.FormEvent) => {
+    const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
         setIsSubmitting(true);
+        setError(null);
 
-        // Simulate API call
-        setTimeout(() => {
-            setIsSubmitting(false);
+        try {
+            const { error: supabaseError } = await supabase
+                .from('contact_inquiries')
+                .insert([formData]);
+
+            if (supabaseError) throw supabaseError;
+
             setIsSent(true);
             setFormData({ name: '', email: '', subject: 'General Inquiry', message: '' });
-        }, 1500);
+        } catch (err) {
+            console.error('Contact error:', err);
+            setError('Failed to send message. Please try again.');
+        } finally {
+            setIsSubmitting(false);
+        }
     };
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
@@ -172,6 +182,12 @@ const Contact: React.FC = () => {
                                         className="block w-full border-zini-charcoal/20 shadow-sm focus:ring-zini-green focus:border-zini-green sm:text-sm px-4 py-3 bg-zini-cream/20"
                                     />
                                 </div>
+
+                                {error && (
+                                    <p className="text-red-500 font-mono text-[10px] text-center uppercase tracking-widest mb-4">
+                                        {error}
+                                    </p>
+                                )}
 
                                 <div>
                                     <button
