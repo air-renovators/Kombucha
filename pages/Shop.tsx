@@ -63,6 +63,21 @@ const Shop: React.FC = () => {
     addToCart(productToAdd, state.qty);
   };
 
+  const getProductImage = (flavorId: string, sizeLabel: string) => {
+    // Exact match for generated images
+    if (flavorId === 'berry-kick' && sizeLabel === '440ml') return '/images/berry-kick-440.png';
+    if (flavorId === 'cool-kick' && sizeLabel === '330ml') return '/images/cool-kick-330.png';
+
+    // Fallbacks based on flavor
+    switch (flavorId) {
+      case 'cool-kick': return '/images/cool-kick.png';
+      case 'berry-kick': return '/images/berry-kick.png';
+      case 'rooibos-boost': return '/images/rooibos-boost.png';
+      case 'black-boost': return '/images/rooibos-boost.png'; // Black tea fallback
+      default: return '/images/cool-kick.png';
+    }
+  };
+
   const getIcon = (type: string) => {
     switch (type) {
       case 'utensils': return <Utensils className="w-12 h-12 text-zini-green opacity-80" />;
@@ -120,24 +135,22 @@ const Shop: React.FC = () => {
                           Others fall back to the main flavor image.
                         */}
                     <img
-                      src={
-                        (flavor.id === 'cool-kick' && currentSize.label === '330ml')
-                          ? '/images/cool-kick-330.png'
-                          : (flavor.id === 'rooibos-boost' ? '/images/rooibos-boost.png' :
-                            flavor.id === 'berry-kick' ? '/images/berry-kick.png' :
-                              flavor.id === 'cool-kick' ? '/images/cool-kick.png' :
-                                '/images/rooibos-boost.png')
-                      }
+                      src={getProductImage(flavor.id, currentSize.label)}
                       alt={`${flavor.name} ${currentSize.label}`}
-                      className="max-h-full max-w-full object-contain drop-shadow-xl transform transition-transform duration-500 key={currentSize.label}"
+                      className="max-h-full max-w-full object-contain drop-shadow-2xl transform transition-transform duration-500 hover:scale-105"
+                      key={`${flavor.id}-${currentSize.label}`}
                     />
                   </div>
                 </div>
 
                 {/* Bottom Half: Info & Controls */}
-                <div className="p-6 bg-[#dccbb1] flex-1 flex flex-col">
-                  <h3 className="font-mono font-bold text-2xl text-[#2c2925] mb-1 uppercase">{flavor.name}</h3>
-                  <p className="font-mono text-[10px] font-bold text-[#4A6C47] uppercase tracking-widest mb-6">{flavor.desc}</p>
+                <div className="p-6 bg-[#dccbb1] flex-1 flex flex-col min-h-[180px]">
+                  <h3 className="font-mono font-bold text-xl md:text-2xl text-[#2c2925] mb-1 uppercase leading-tight line-clamp-2">
+                    {flavor.name}
+                  </h3>
+                  <p className="font-mono text-[10px] font-bold text-[#4A6C47] uppercase tracking-widest mb-4 h-8 overflow-hidden">
+                    {flavor.desc}
+                  </p>
 
                   <div className="space-y-4 mt-auto">
                     {/* Size Selector */}
