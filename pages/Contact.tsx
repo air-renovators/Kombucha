@@ -1,3 +1,5 @@
+import React, { useState } from 'react';
+import { Mail, MapPin, Phone, Send, Loader2, CheckCircle } from 'lucide-react';
 import { supabase } from '../lib/supabase';
 
 const Contact: React.FC = () => {
