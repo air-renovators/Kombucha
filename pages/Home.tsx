@@ -193,55 +193,123 @@ const Home: React.FC = () => {
             </div>
          </section>
 
-         {/* The Mercantile Section (Dark) */}
-         <section className="bg-gradient-to-br from-[#5E7468] to-[#99A794] py-20 md:py-32 text-zini-cream relative overflow-hidden">
-            {/* Overlay gradient for depth */}
-            <div className="absolute inset-0 bg-zini-dark/10"></div>
+         {/* The Process Section (Dark) */}
+         <section className="bg-zini-dark py-24 md:py-32 text-zini-cream relative overflow-hidden">
+            {/* Background elements */}
+            <div className="absolute inset-0 opacity-[0.05] pointer-events-none" style={{ backgroundImage: 'linear-gradient(#f9f7f2 1px, transparent 1px), linear-gradient(90deg, #f9f7f2 1px, transparent 1px)', backgroundSize: '80px 80px' }}></div>
 
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-               <div className="grid grid-cols-1 md:grid-cols-2 gap-12 md:gap-16 items-center">
+               <div className="text-center mb-20">
+                  <p className="font-mono text-[10px] uppercase tracking-[0.3em] text-zini-green mb-4">Mastering the Craft</p>
+                  <h2 className="font-serif text-5xl md:text-7xl mb-6">The Process.</h2>
+                  <p className="font-sans text-zini-cream/60 max-w-2xl mx-auto italic text-lg">From first brew to the final fizz—patience is the primary ingredient.</p>
+               </div>
 
-                  {/* Image Side */}
-                  <div className="relative order-2 md:order-1">
-                     <div className="bg-zini-dark p-2 shadow-2xl transform rotate-1">
-                        <SmartImageGenerator
-                           initialImageSrc="/images/mercantile-equipment.png"
-                           alt="Mercantile Brewing Equipment"
-                           defaultPrompt="A collection of premium kombucha brewing equipment on a dark wooden table. Includes a glass carboy, linen cloths, ph test strips, and a thermometer. Moody lighting, high contrast, cinematic composition, photorealistic."
-                           className="w-full grayscale contrast-125"
-                        />
+               <div className="grid grid-cols-1 md:grid-cols-2 gap-16 md:gap-24">
+                  {/* Phase 1 */}
+                  <div className="relative">
+                     <div className="absolute -top-12 -left-8 text-[120px] font-serif italic text-white/5 pointer-events-none select-none">01</div>
+                     <div className="inline-block border border-zini-green/30 px-3 py-1 mb-6">
+                        <span className="font-mono text-[10px] uppercase tracking-widest text-zini-green">Phase 1: The Primary Ferment (F1)</span>
+                     </div>
+                     <h3 className="font-serif text-3xl mb-8 border-b border-white/10 pb-4">Where the Magic Starts</h3>
+
+                     <div className="space-y-10">
+                        <div className="group">
+                           <h4 className="font-mono text-xs font-bold uppercase tracking-widest text-zini-green mb-2">01. Brew the Base</h4>
+                           <p className="font-sans text-zini-cream/70 leading-relaxed">Boil filtered water and steep 4–6 organic tea bags per liter. Pure foundation for the SCOBY.</p>
+                        </div>
+
+                        <div className="group">
+                           <h4 className="font-mono text-xs font-bold uppercase tracking-widest text-zini-green mb-2">02. Sweeten & Cool</h4>
+                           <p className="font-sans text-zini-cream/70 leading-relaxed">Stir in 70–80g of sugar per liter while hot. <span className="text-zini-green italic font-bold">The Cooling Rule:</span> Let the tea cool completely to room temperature. High heat will kill your live SCOBY.</p>
+                        </div>
+
+                        <div className="group">
+                           <h4 className="font-mono text-xs font-bold uppercase tracking-widest text-zini-green mb-2">03. Inoculate & Wait</h4>
+                           <p className="font-sans text-zini-cream/70 leading-relaxed">Add starter tea and gently slide the SCOBY on top. Cover with cloth and wait 7+ days in a warm, dark spot (20–26°C).</p>
+                        </div>
                      </div>
                   </div>
 
-                  {/* Text Side */}
-                  <div className="order-1 md:order-2">
-                     <h2 className="font-serif text-4xl md:text-5xl text-zini-dark mb-6 md:mb-8">The Mercantile</h2>
-                     <p className="font-mono text-sm leading-relaxed text-zini-dark/80 mb-8 md:mb-10 max-w-md">
-                        We believe in the physical artifacts of brewing. Every jar, every cloth, and every bag of sugar has been tested in our Mtunzini laboratory to ensure your home brew never fails.
+                  {/* Phase 2 */}
+                  <div className="relative">
+                     <div className="absolute -top-12 -left-8 text-[120px] font-serif italic text-white/5 pointer-events-none select-none">02</div>
+                     <div className="inline-block border border-zini-green/30 px-3 py-1 mb-6">
+                        <span className="font-mono text-[10px] uppercase tracking-widest text-zini-green">Phase 2: Flavor & Carbonation (F2)</span>
+                     </div>
+                     <h3 className="font-serif text-3xl mb-8 border-b border-white/10 pb-4">The Fizz & Character</h3>
+
+                     <div className="space-y-10">
+                        <div className="group">
+                           <h4 className="font-mono text-xs font-bold uppercase tracking-widest text-zini-green mb-2">04. Prep & Bottle</h4>
+                           <p className="font-sans text-zini-cream/70 leading-relaxed">Remove SCOBY and set aside 1 cup of starter for your next batch. Pour the rest into flip-top bottles using a funnel.</p>
+                        </div>
+
+                        <div className="group">
+                           <h4 className="font-mono text-xs font-bold uppercase tracking-widest text-zini-green mb-2">05. Infuse & Build Pressure</h4>
+                           <p className="font-sans text-zini-cream/70 leading-relaxed">Add ginger, lemon, or mashed berries. Seal tightly and leave at room temperature for 2–5 days to trap CO₂.</p>
+                        </div>
+
+                        <div className="group">
+                           <h4 className="font-mono text-xs font-bold uppercase tracking-widest text-zini-green mb-2">06. The Finish Line</h4>
+                           <p className="font-sans text-zini-cream/70 leading-relaxed">Chill to stop fermentation. Strain if desired and serve cold. Toast to your happy gut!</p>
+                        </div>
+                     </div>
+                  </div>
+               </div>
+            </div>
+         </section>
+
+         {/* Health Benefits Section */}
+         <section className="bg-zini-cream py-24 md:py-32 relative overflow-hidden">
+            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+               <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
+                  <div>
+                     <p className="font-mono text-[10px] uppercase tracking-[0.3em] text-zini-green mb-4">Scientific Backing</p>
+                     <h2 className="font-serif text-5xl md:text-6xl text-zini-dark mb-8 leading-tight">
+                        The Elixir <br />
+                        <span className="italic">of Life.</span>
+                     </h2>
+                     <p className="font-sans text-zini-charcoal/70 text-lg leading-relaxed mb-10 max-w-md">
+                        More than just a refreshing drink, Zini Kombucha is a living culture that supports your body's natural vitality with every sip.
                      </p>
 
-                     <ul className="space-y-4 mb-10 md:mb-12">
+                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-8">
                         {[
-                           '1 Gallon Glass Carboy',
-                           'Breathable Linen Covers',
-                           'Precision PH Test Strips',
-                           'Temperature Monitoring Strips'
-                        ].map((item, i) => (
-                           <li key={i} className="flex items-center space-x-3 group">
-                              <div className="w-5 h-5 rounded-full bg-zini-green text-zini-cream flex items-center justify-center">
-                                 <CheckCircle className="w-3 h-3" />
-                              </div>
-                              <span className="font-mono text-xs uppercase tracking-wider text-zini-dark/70 group-hover:text-zini-dark transition-colors">{item}</span>
-                           </li>
+                           { title: 'Gut Microbiome', desc: 'Beneficially alters microbiota, increasing helpful bacteria like Bifidobacterium.' },
+                           { title: 'Aids Digestion', desc: 'Natural organic acids help break down nutrients and ease GI symptoms.' },
+                           { title: 'Immune Support', desc: '70% of the immune system lives in the gut—probiotics bridge the gap.' },
+                           { title: 'Antioxidant Power', desc: 'Rich in polyphenols that neutralize free radicals and reduce oxidative stress.' },
+                           { title: 'Blood Sugar Control', desc: 'Studies show kombucha can help lower fasting blood glucose levels.' },
+                           { title: 'Metabolic Boost', desc: 'Abundant in B-vitamins (B1, B6, B12) to support daily energy levels.' }
+                        ].map((benefit, i) => (
+                           <div key={i} className="border-l-2 border-zini-green/20 pl-6 py-2">
+                              <h4 className="font-serif text-lg text-zini-dark mb-2">{benefit.title}</h4>
+                              <p className="font-sans text-sm text-zini-charcoal/60 leading-relaxed">{benefit.desc}</p>
+                           </div>
                         ))}
-                     </ul>
-
-                     <Link to="/shop" className="group inline-flex items-center text-zini-dark font-serif italic text-xl border-b border-zini-dark/30 hover:border-zini-dark transition-colors pb-1">
-                        Shop The Collection
-                        <ArrowRight className="w-4 h-4 ml-2 transform group-hover:translate-x-2 transition-transform" />
-                     </Link>
+                     </div>
                   </div>
 
+                  <div className="relative">
+                     <div className="aspect-[4/5] bg-zini-beige shadow-3xl overflow-hidden relative group">
+                        <SmartImageGenerator
+                           initialImageSrc="/images/benefits-visual.png"
+                           alt="Fresh Kombucha with lifestyle elements"
+                           defaultPrompt="A close up of a condensation-covered glass bottle of kombucha next to fresh ginger root and green tea leaves. Soft morning sunlight filtering through a window, minimalist aesthetic, high end lifestyle photography, 8k."
+                           className="w-full h-full object-cover grayscale-[20%] group-hover:grayscale-0 transition-all duration-1000"
+                        />
+                        <div className="absolute inset-0 bg-gradient-to-t from-zini-dark/40 to-transparent opacity-60"></div>
+                        <div className="absolute bottom-10 left-10 right-10">
+                           <div className="bg-white/90 backdrop-blur-md p-6 border border-white/20">
+                              <p className="font-serif italic text-zini-dark text-xl text-center">"A balanced gut is a balanced life."</p>
+                           </div>
+                        </div>
+                     </div>
+                     {/* Decorative Offset Frame */}
+                     <div className="absolute -top-6 -right-6 w-full h-full border border-zini-green/10 -z-10 bg-grain opacity-50"></div>
+                  </div>
                </div>
             </div>
          </section>

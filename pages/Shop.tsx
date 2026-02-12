@@ -120,14 +120,14 @@ const Shop: React.FC = () => {
                 {/* Top Half: Icon & Color */}
                 <div className={`${flavor.color} aspect-square p-8 flex flex-col items-center justify-center relative border-b-4 border-black/5`}>
                   {/* Tag */}
-                  <div className="absolute top-0 right-6 bg-white px-3 py-1 shadow-sm">
+                  <div className="absolute top-0 right-6 bg-white px-3 py-1 shadow-sm z-20">
                     <span className="font-mono text-[10px] font-bold uppercase tracking-widest text-black/70">
                       {flavor.subtitle}
                     </span>
                   </div>
 
                   {/* Dynamic Product Image */}
-                  <div className="w-full h-full flex items-center justify-center relative">
+                  <div className="w-full h-full flex items-center justify-center relative z-10">
                     {/* 
                           DYNAMIC IMAGE LOGIC:
                           We attempt to show the specific size image if available.
@@ -144,11 +144,11 @@ const Shop: React.FC = () => {
                 </div>
 
                 {/* Bottom Half: Info & Controls */}
-                <div className="p-6 bg-[#dccbb1] flex-1 flex flex-col min-h-[180px]">
-                  <h3 className="font-mono font-bold text-xl md:text-2xl text-[#2c2925] mb-1 uppercase leading-tight line-clamp-2">
+                <div className="p-6 bg-[#dccbb1] flex-1 flex flex-col min-h-[200px]">
+                  <h3 className="font-mono font-bold text-xl md:text-2xl text-[#2c2925] mb-1 uppercase leading-tight min-h-[3rem] flex items-center">
                     {flavor.name}
                   </h3>
-                  <p className="font-mono text-[10px] font-bold text-[#4A6C47] uppercase tracking-widest mb-4 h-8 overflow-hidden">
+                  <p className="font-mono text-[10px] font-bold text-[#4A6C47] uppercase tracking-widest mb-4 h-8 flex items-center overflow-hidden">
                     {flavor.desc}
                   </p>
 
